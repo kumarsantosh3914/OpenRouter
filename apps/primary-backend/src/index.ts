@@ -1,5 +1,7 @@
 import 'dotenv/config';
 import express, { Request, Response } from 'express';
+import cookieParser from 'cookie-parser';
+import authRoutes from './modules/auth/auth.routes';
 
 const app = express();
 const PORT = process.env.PRIMARY_BACKEND_PORT || 3000;
@@ -7,6 +9,7 @@ const PORT = process.env.PRIMARY_BACKEND_PORT || 3000;
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 // Health check endpoint
 app.get('/health', (_req: Request, res: Response) => {
@@ -18,7 +21,10 @@ app.get('/', (_req: Request, res: Response) => {
   res.json({ message: 'Primary Backend API' });
 });
 
+// API Routes
+app.use('/api/v1/auth', authRoutes);
+
 // Start server
 app.listen(Number(PORT), () => {
-  console.log(`Primary backend server running on port ${PORT}`);
+  console.log(`🚀 Primary backend server running on port ${PORT}`);
 });
