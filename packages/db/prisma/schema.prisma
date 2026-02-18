@@ -27,6 +27,7 @@ model ApiKey {
   deleted         Boolean        @default(false)
   lastUsed        DateTime?
   creditsConsumed Int            @default(0)
+  createdAt       DateTime       @default(now())
   user            User           @relation(fields: [userId], references: [id])
   conversations   Conversation[]
 }
@@ -45,7 +46,6 @@ model Model {
   companyId             Int
   company               Company                @relation(fields: [companyId], references: [id])
   modelProviderMappings ModelProviderMapping[]
-  // conversations Conversation[]
 }
 
 model Provider {

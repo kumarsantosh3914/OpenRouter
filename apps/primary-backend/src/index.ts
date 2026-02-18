@@ -2,6 +2,7 @@ import 'dotenv/config';
 import express, { Request, Response } from 'express';
 import cookieParser from 'cookie-parser';
 import authRoutes from './modules/auth/auth.routes';
+import apiKeyRoutes from './modules/apiKeys/apiKeys.routes';
 
 const app = express();
 const PORT = process.env.PRIMARY_BACKEND_PORT || 3000;
@@ -23,6 +24,8 @@ app.get('/', (_req: Request, res: Response) => {
 
 // API Routes
 app.use('/api/v1/auth', authRoutes);
+app.use('/api/v1/api-keys', apiKeyRoutes);
+
 
 // Start server
 app.listen(Number(PORT), () => {
