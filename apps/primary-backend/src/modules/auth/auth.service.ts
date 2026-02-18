@@ -26,16 +26,13 @@ export class AuthService {
       },
       select: {
         id: true,
-        email: true,
-        credits: true,
-        createdAt: true,
       },
     });
 
     // Generate JWT token
     const token = generateToken({
       userId: user.id,
-      email: user.email,
+      email: input.email,
     });
 
     return {
@@ -70,8 +67,6 @@ export class AuthService {
     return {
       user: {
         id: user.id,
-        email: user.email,
-        credits: user.credits,
       },
       token,
     };
@@ -82,9 +77,6 @@ export class AuthService {
       where: { id: userId },
       select: {
         id: true,
-        email: true,
-        credits: true,
-        createdAt: true,
       },
     });
 
