@@ -11,4 +11,23 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  server: {
+    proxy: {
+      "/api": {
+        target: "http://localhost:3000",
+        changeOrigin: true,
+        // Forward cookies back to the browser
+        configure: (proxy) => {
+          proxy.on("proxyRes", (proxyRes) => {
+            const setCookie = proxyRes.headers["set-cookie"];
+            if (setCookie) {
+              proxyRes.headers["set-cookie"] = setCookie.map((c) =>
+                c.replace(/; secure/gi, "")
+              );
+            }
+          });
+        },
+      },
+    },
+  },
 })
