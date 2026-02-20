@@ -2,10 +2,6 @@
 
 Monorepo for an OpenRouter-style dashboard + backend services.
 
-## Screenshots
-
-Place the screenshots in `assets/screenshots/` (create the folder if it doesn't exist) using the filenames below.
-
 ### Landing
 
 ![Landing](/assets/screenshots/landing.png)
