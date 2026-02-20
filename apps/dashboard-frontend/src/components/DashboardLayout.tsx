@@ -1,6 +1,7 @@
-import { ReactNode } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { ReactNode, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
+import { authApi } from "@/api/auth";
 import {
     Zap,
     Key,
@@ -8,6 +9,7 @@ import {
     BarChart3,
     Layers,
     LogOut,
+    Loader2,
 } from "lucide-react";
 
 const navItems = [
@@ -18,8 +20,22 @@ const navItems = [
 ];
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
-    const { user } = useAuth();
+    const { user, setUser } = useAuth();
     const location = useLocation();
+    const navigate = useNavigate();
+    const [signingOut, setSigningOut] = useState(false);
+
+    async function handleSignOut() {
+        setSigningOut(true);
+        try {
+            await authApi.signOut();
+        } catch {
+            // cookie may already be gone — continue
+        } finally {
+            setUser(null);
+            navigate("/sign-in", { replace: true });
+        }
+    }
 
     return (
         <div className="min-h-screen bg-[#080c14] text-white flex">
@@ -40,8 +56,8 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
                                 key={to}
                                 to={to}
                                 className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors ${active
-                                        ? "bg-violet-500/10 text-violet-300"
-                                        : "text-white/40 hover:text-white/70 hover:bg-white/5"
+                                    ? "bg-violet-500/10 text-violet-300"
+                                    : "text-white/40 hover:text-white/70 hover:bg-white/5"
                                     }`}
                             >
                                 <Icon className="w-4 h-4" />
@@ -52,13 +68,19 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
                 </nav>
 
                 <div className="px-3 py-4 border-t border-white/5">
-                    <div className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-white/40">
+                    <button
+                        type="button"
+                        onClick={handleSignOut}
+                        disabled={signingOut}
+                        className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-white/40 hover:text-white/70 hover:bg-white/5 disabled:opacity-60 disabled:cursor-not-allowed transition-colors"
+                        aria-label="Sign out"
+                    >
                         <div className="w-6 h-6 rounded-full bg-violet-500/20 flex items-center justify-center text-xs text-violet-400 font-medium">
-                            {user?.id}
+                            {signingOut ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : user?.id}
                         </div>
-                        <span className="flex-1 truncate">User #{user?.id}</span>
+                        <span className="flex-1 truncate text-left">User #{user?.id}</span>
                         <LogOut className="w-3.5 h-3.5" />
-                    </div>
+                    </button>
                 </div>
             </aside>
 

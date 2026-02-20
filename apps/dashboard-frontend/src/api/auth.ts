@@ -50,4 +50,9 @@ export const authApi = {
         request<{ success: boolean; user: AuthUser }>(`${BASE}/profile`, {
             method: "GET",
         }),
+
+    signOut: () =>
+        request<{ success: boolean; message: string }>(`${BASE}/sign-out`, {
+            method: "POST",
+        }),
 };

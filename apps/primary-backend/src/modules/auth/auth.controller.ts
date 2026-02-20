@@ -125,6 +125,14 @@ export class AuthController {
       });
     }
   }
+  async signOut(req: Request, res: Response) {
+    res.clearCookie('token', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+    });
+    res.json({ success: true, message: 'Signed out successfully' });
+  }
 }
 
 export const authController = new AuthController();

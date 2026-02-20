@@ -35,6 +35,28 @@ export class PaymentsService {
             credits: user.credits,
         };
     }
+
+    async getBalance(userId: number) {
+        const user = await prisma.user.findUnique({
+            where: { id: userId },
+            select: { credits: true },
+        });
+        return { credits: user?.credits ?? 0 };
+    }
+
+    async getTransactions(userId: number) {
+        const transactions = await prisma.onrampTransaction.findMany({
+            where: { userId },
+            orderBy: { id: 'desc' },
+            take: 20,
+            select: {
+                id: true,
+                amount: true,
+                status: true,
+            },
+        });
+        return { transactions };
+    }
 }
 
 export const paymentsService = new PaymentsService();

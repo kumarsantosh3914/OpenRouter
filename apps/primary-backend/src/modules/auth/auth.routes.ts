@@ -7,6 +7,7 @@ const router = Router();
 // Public routes
 router.post('/sign-up', authController.signup.bind(authController));
 router.post('/sign-in', authController.signin.bind(authController));
+router.post('/sign-out', authController.signOut.bind(authController));
 
 // Protected routes
 router.get('/profile', authMiddleware, authController.profile.bind(authController));

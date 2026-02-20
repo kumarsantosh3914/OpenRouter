@@ -22,6 +22,27 @@ export class PaymentsController {
             res.status(500).json({ success: false, message: 'Internal server error' });
         }
     }
+    async getBalance(req: AuthRequest, res: Response) {
+        try {
+            const userId = req.user?.userId;
+            if (!userId) return res.status(401).json({ success: false, message: 'Unauthorized' });
+            const result = await paymentsService.getBalance(userId);
+            res.json({ success: true, ...result });
+        } catch {
+            res.status(500).json({ success: false, message: 'Internal server error' });
+        }
+    }
+
+    async getTransactions(req: AuthRequest, res: Response) {
+        try {
+            const userId = req.user?.userId;
+            if (!userId) return res.status(401).json({ success: false, message: 'Unauthorized' });
+            const result = await paymentsService.getTransactions(userId);
+            res.json({ success: true, ...result });
+        } catch {
+            res.status(500).json({ success: false, message: 'Internal server error' });
+        }
+    }
 }
 
 export const paymentsController = new PaymentsController();
