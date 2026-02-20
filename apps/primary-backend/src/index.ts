@@ -3,6 +3,8 @@ import express, { Request, Response } from 'express';
 import cookieParser from 'cookie-parser';
 import authRoutes from './modules/auth/auth.routes';
 import apiKeyRoutes from './modules/apiKeys/apiKeys.routes';
+import modelsRoutes from './modules/models/models.routes';
+import paymentsRoutes from './modules/payments/payments.routes';
 
 const app = express();
 const PORT = process.env.PRIMARY_BACKEND_PORT || 3000;
@@ -25,6 +27,8 @@ app.get('/', (_req: Request, res: Response) => {
 // API Routes
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/api-keys', apiKeyRoutes);
+app.use('/api/v1/models', modelsRoutes);
+app.use('/api/v1/payments', paymentsRoutes);
 
 
 // Start server
