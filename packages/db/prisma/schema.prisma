@@ -1,6 +1,5 @@
 generator client {
-  provider = "prisma-client"
-  output   = "../../../generated/prisma"
+  provider = "prisma-client-js"
 }
 
 datasource db {
@@ -79,8 +78,8 @@ model Conversation {
   userId                 Int
   apiKeyId               Int
   modelProviderMappingId Int
-  input                  String
-  output                 String
+  input                  String @db.Text
+  output                 String @db.Text
   inputTokenCount        Int
   outputTokenCount       Int
   user                   User                 @relation(fields: [userId], references: [id])

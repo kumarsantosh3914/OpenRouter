@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE `Conversation` MODIFY `input` TEXT NOT NULL,
+    MODIFY `output` TEXT NOT NULL;
